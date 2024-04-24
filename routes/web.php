@@ -64,4 +64,6 @@ Route::group(['prefix' => 'admin'], function () {
 
     //route admin 
     Route::post('resorting', [CategoryController::class, 'resorting'])->name('resorting');
+    // update movies top view
+    Route::get('/update-topview-phim', [MovieController::class, 'update_topview']);
 });

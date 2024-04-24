@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-<div class="container">
+<div class="container-fluid">
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
@@ -19,7 +19,7 @@
                     @endif
                         @csrf
                         <div>
-                            <label>Title</label>
+                            <label>Tiêu đề</label>
                             <div>
                                 <input id="slug" name="title" class="form-control" type="text" placeholder="Nhập tiêu đề" value="{{ isset($movie->title) ? $movie->title : '' }}" onkeyup="ChangeToSlug()">
                             </div>
@@ -31,13 +31,25 @@
                             </div>
                         </div>
                         <div>
-                            <label>Slug</label>
+                            <label>Trailer phim</label>
                             <div>
-                                <input id="convert_slug" name="slug" class="form-control" type="text" placeholder="Nhập tiêu đề" value="{{ isset($movie->slug) ? $movie->slug : '' }}">
+                                <input name="trailer" class="form-control" type="text" value="{{ isset($movie->trailer) ? $movie->trailer : '' }}">
                             </div>
                         </div>
                         <div>
-                            <label>Description</label>
+                            <label>Slug</label>
+                            <div>
+                                <input id="convert_slug" name="slug" class="form-control" type="text" value="{{ isset($movie->slug) ? $movie->slug : '' }}">
+                            </div>
+                        </div>
+                        <div>
+                            <label>Thời lượng</label>
+                            <div>
+                                <input name="thoiluong" class="form-control" type="text" value="{{ isset($movie->thoiluong) ? $movie->thoiluong : '' }}">
+                            </div>
+                        </div>
+                        <div>
+                            <label>Mô tả</label>
                             <div>
                             <textarea id="description" 
                                 name="description" 
@@ -48,7 +60,7 @@
                             </div>
                         </div>
                         <div>
-                            <label name="active">Active</label>
+                            <label name="active">Hoạt động</label>
                             <div>
                                 <select name="status" class="form-control">
                                     <option value="1" @if(!empty($movie->status) && $movie->status == 1) checked @endif>Hiển thị</option>
@@ -57,7 +69,7 @@
                             </div>
                         </div>
                         <div>
-                            <label name="category">Category</label>
+                            <label name="category">Danh mục</label>
                             <div>
                                 <select name="category_id" class="form-control">
                                     @if (!empty($category))
@@ -69,7 +81,7 @@
                             </div>
                         </div>
                         <div>
-                            <label name="genre">Genre</label>
+                            <label name="genre">Thể loại</label>
                             <div>
                             <select name="genre_id" class="form-control">
                                     @if (!empty($genre))
@@ -81,7 +93,7 @@
                             </div>
                         </div>
                         <div>
-                            <label name="country">Country</label>
+                            <label name="country">Quốc gia</label>
                             <div>
                             <select name="country_id" class="form-control">
                                     @if (!empty($country))
@@ -102,7 +114,31 @@
                             </div>
                         </div>
                         <div>
-                            <label name="image">Image</label>
+                            <label name="resolution">Định dạng</label>
+                            <div>
+                                <select name="resolution" class="form-control">
+                                    <option value="0" @if(!empty($movie->resolution) && $movie->resolution == 0) checked @endif>HD</option>
+                                    <option value="1" @if(!empty($movie->resolution) && $movie->resolution == 1) checked @endif>SD</option>
+                                    <option value="2" @if(!empty($movie->resolution) && $movie->resolution == 2) checked @endif>HDCam</option>
+                                    <option value="3" @if(!empty($movie->resolution) && $movie->resolution == 3) checked @endif>Cam</option>
+                                    <option value="4" @if(!empty($movie->resolution) && $movie->resolution == 4) checked @endif>FullHD</option>
+                                    <option value="5" @if(!empty($movie->resolution) && $movie->resolution == 5) checked @endif>Trailer</option>
+
+
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <label name="phude">Phụ đề</label>
+                            <div>
+                                <select name="phude" class="form-control">
+                                    <option value="0" @if(!empty($movie->phude) && $movie->phude == 0) checked @endif>Vietsub</option>
+                                    <option value="1" @if(!empty($movie->phude) && $movie->phude == 1) checked @endif>Thuyết minh</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <label name="image">Hình ảnh</label>
                             <div>
                                 <input name="image" type="file" class="forn-controller-file">
                             </div>
@@ -120,24 +156,38 @@
   <thead>
     <tr>
       <th scope="col">#</th>
-      <th scope="col">Title</th>
+      <th scope="col">Tên phim</th>
       <th scope="col">Slug</th>
-      <th scope="col">Image</th>
-      <th scope="col">Hot</th>
+      <th scope="col">Trailer</th>
+
+      <th scope="col">Thời lượng</th>
+      <th scope="col">Hình ảnh</th>
+      <th scope="col">Phim hot</th>
+      <th scope="col">Định dạng</th>
+      <th scope="col">Phụ đề</th>
+
       <!-- <th scope="col">Description</th> -->
-      <th scope="col">Active/Inactive</th>
-      <th scope="col">Category</th>
-      <th scope="col">Genre</th>
-      <th scope="col">Country</th>
-      <th scope="col">Manage</th>
+      <th scope="col">Tình trạng</th>
+      <th scope="col">Danh mục</th>
+      <th scope="col">Thể loại</th>
+      <th scope="col">Quốc gia</th></th>
+      <th scope="col">Quản lý</th>
+      <th scope="col">Ngày cập nhật</th>
+
+      <!-- <th scope="col">Top views</th> -->
+
     </tr>
   </thead>
   <tbody>
   @foreach($list as $key =>$cate)
     <tr>
       <th scope="row">{{$key}}</th>
-      <td>{{$cate->title}}</td>  
-      <td>{{$cate->slug}}</td>  
+      <td>{{$cate->title}}</td>   
+      <td>{{$cate->slug}}</td> 
+      <td>{{$cate->trailer}}</td> 
+
+      <td>{{$cate->thoiluong}}</td>  
+       
       <td><img width="100px" src="{{asset('public/uploads/movie/'.$cate->image)}}"></td>  
       <!-- <td>{{$cate->description}}</td> -->
       <td>
@@ -145,6 +195,28 @@
             Không
         @else
             Có
+        @endif
+      </td>
+      <td>
+        @if($cate->resolution==0)
+            HD
+        @elseif ($cate->resolution==1)
+            SD
+        @elseif ($cate->resolution==2)
+            HDCam
+        @elseif ($cate->resolution==3)
+            Cam
+        @elseif ($cate->resolution==4)
+            FullHD
+        @else
+            Trailer
+        @endif
+      </td>
+      <td>
+        @if($cate->phude==0)
+            Vietsub
+        @else
+            Thuyết minh
         @endif
       </td>
       <td>
@@ -165,7 +237,18 @@
         <form action="{{route('movie.edit', ['id' => $cate->id])}}">
             <button type="submit" class="btn btn-warning">Sửa</button>
         </form>
-      </td>
+      </td> 
+      <td>{{$cate->ngaycapnhat}}</td>  
+      <!-- <td>
+        <div>
+            <select name="topview" class="select-topview" id="$cate->id">
+                <option value="0" @if(!empty($movie->topview) && $movie->topview == 0) checked @endif>Ngày</option>
+                <option value="1" @if(!empty($movie->topview) && $movie->topview == 1) checked @endif>Tuần</option>
+                <option value="2" @if(!empty($movie->topview) && $movie->topview == 1) checked @endif>Tháng</option>
+
+            </select>
+        </div>
+      </td>   -->
 
     </tr>
     @endforeach

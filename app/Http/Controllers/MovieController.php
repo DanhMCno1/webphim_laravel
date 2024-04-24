@@ -7,6 +7,8 @@ use App\Models\Movie;
 use App\Models\Category;
 use App\Models\Genre;
 use App\Models\Country;
+use Carbon\Carbon;
+use File;
 
 class MovieController extends Controller
 {
@@ -17,8 +19,23 @@ class MovieController extends Controller
      */
     public function index()
     {
-        //
+        $list = Movie::with('category','genre','country')->orderBy('id','DESC')->get();
+
+        $path = public_path()."/json/";
+        if (!is_dir($path)) {
+            mkdir($path, 0777,true);
+        }
+        File::put($path.'movies.json',json_encode($list));
+
+        return view('admin.movie.form',compact('list'));
     }
+    public function update_topview(Request $request){
+        $data = $request->all();
+        $movie = Movie::find($data['id_phim']);
+        $movie->topview = $data['topview'];
+        $movie->save();
+    }
+    
 
     /**
      * Show the form for creating a new resource.
@@ -46,6 +63,11 @@ class MovieController extends Controller
         $movie = new Movie();
         $movie->title = $data['title'];
         $movie->slug = $data['slug'];
+        $movie->trailer = $data['trailer'];
+
+        $movie->resolution = $data['resolution'];
+        $movie->phude = $data['phude'];
+        $movie->thoiluong = $data['thoiluong'];
         $movie->description = $data['description'];
         $movie->status = $data['status'];
         $movie->category_id = $data['category_id'];
@@ -53,6 +75,10 @@ class MovieController extends Controller
         $movie->name_eng = $data['name_eng'];
         $movie->phim_hot = $data['phim_hot'];
         $movie->country_id = $data['country_id'];
+        $movie->ngaytao = Carbon::now('Asia/Ho_Chi_Minh');
+        $movie->ngaycapnhat = Carbon::now('Asia/Ho_Chi_Minh');
+
+
         //them hinh anh 
         $get_image = $request -> file('image');
         $path = 'public/uploads/movie/';
@@ -108,6 +134,11 @@ class MovieController extends Controller
         $movie = Movie::find($id);
         $movie -> title = $data['title'];
         $movie -> slug = $data['slug'];
+        $movie->trailer = $data['trailer'];
+
+        $movie->phude = $data['phude'];
+        $movie->thoiluong = $data['thoiluong'];
+        $movie->resolution = $data['resolution'];
         $movie -> description = $data['description'];
         $movie -> status = $data['status'];
         $movie -> category_id = $data['category_id'];
@@ -115,6 +146,7 @@ class MovieController extends Controller
         $movie -> country_id = $data['country_id'];
         $movie->name_eng = $data['name_eng'];
         $movie->phim_hot = $data['phim_hot'];
+        $movie->ngaycapnhat = Carbon::now('Asia/Ho_Chi_Minh');
 
         //them hinh anh 
         $get_image = $request -> file('image');

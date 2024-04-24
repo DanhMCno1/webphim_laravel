@@ -164,7 +164,7 @@
          <div class="row fullwith-slider"></div>
       </div>
       <div class="container">
-         <div class="row container" id="wrapper">
+      <div class="row container" id="wrapper">
          <div class="halim-panel-filter">
             <div class="panel-heading">
                <div class="row">
@@ -490,7 +490,7 @@
                   <div class="clearfix"></div>
                </div>
             </aside>
-         </div>
+      </div>
       </div>
       <div class="clearfix"></div>
       <footer id="footer" class="clearfix">
