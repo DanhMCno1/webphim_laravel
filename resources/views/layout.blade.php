@@ -51,13 +51,17 @@
                <div class="col-md-5 col-sm-6 halim-search-form hidden-xs">
                   <div class="header-nav">
                      <div class="col-xs-12">
-                        <form id="search-form-pc" name="halimForm" role="search" action="" method="GET">
+                     <form id="search-form-pc" name="halimForm" role="search" method="GET" action="{{ route('tim-kiem') }}">
                            <div class="form-group form-timkiem">
                               <div class="input-group col-xs-12">
-                                 <input id="timkiem" type="text" name="search" class="form-control" placeholder="Tìm kiếm phim ..." autocomplete="off" required>
-
+                                 <form action="{{route('tim-kiem')}}" method="GET">
+                                 <input id="timkiem" type="text" name="search" class="form-control" placeholder="Tìm kiếm phim ..." autocomplete="off" >
+                                 <button class="btn btn-primary">Search</button>
+                                 </form>
                               </div>
-                              <ul class="list-group" id="result" ></ul>
+                              <ul class="list-group" id="result">
+                                 
+                              </ul>
                            </div>
                         </form>
                         <ul class="ui-autocomplete ajax-results hidden"></ul>
@@ -173,13 +177,19 @@
                   $.getJSON('/json/movies.json',function(data){
                      $.each(data, function(key, value){
                         if(value.title.search(expression) != -1){
-                           $('#result').append('<li class="list-group-item" style="cursor:pointer"><img src="/public/uploads/movie'+value.image+'"></li>');
+                           $('#result').append('<li class="list-group-item" style="cursor:pointer"><img height="40" width="40" src="/public/uploads/movie/'+value.image+'">'+value.title+' <br/> <span>'+value.name_eng+'<span> </li>');
 
                         }
                      });
                   })
                }
              })
+             $('#result').on('click','li',function(){
+               var click_text = $(this).text().split('|');
+
+               $('#timkiem').val($.trim(click_text[0]));
+               $("#result").html('');
+             });
          })
       </script>
       <script type="text/javascript">

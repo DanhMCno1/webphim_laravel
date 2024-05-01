@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Movie;
+use App\Models\Movie_Genre;
 use App\Models\Category;
 use App\Models\Genre;
 use App\Models\Country;
@@ -19,8 +20,8 @@ class MovieController extends Controller
      */
     public function index()
     {
-        $list = Movie::with('category','genre','country')->orderBy('id','DESC')->get();
-
+        $list = Movie::with('category','movie_genre','country','genre')->orderBy('id','DESC')->get();
+        // return response()->json($list);
         $path = public_path()."/json/";
         if (!is_dir($path)) {
             mkdir($path, 0777,true);
@@ -35,8 +36,6 @@ class MovieController extends Controller
         $movie->topview = $data['topview'];
         $movie->save();
     }
-    
-
     /**
      * Show the form for creating a new resource.
      *
@@ -47,8 +46,9 @@ class MovieController extends Controller
         $category = Category::pluck('title','id');
         $genre = Genre::pluck('title','id');
         $country = Country::pluck('title','id');
+        $list_genre = Genre::all();
         $list = Movie::orderBy('id','DESC')->get();
-        return view ('admincp.movie.form',compact('list','genre', 'country', 'category'));
+        return view ('admincp.movie.form',compact('list','genre', 'country', 'category','list_genre'));
     }
 
     /**
@@ -64,19 +64,22 @@ class MovieController extends Controller
         $movie->title = $data['title'];
         $movie->slug = $data['slug'];
         $movie->trailer = $data['trailer'];
-
         $movie->resolution = $data['resolution'];
         $movie->phude = $data['phude'];
         $movie->thoiluong = $data['thoiluong'];
+        $movie->sotap = $data['sotap'];
+
         $movie->description = $data['description'];
         $movie->status = $data['status'];
         $movie->category_id = $data['category_id'];
-        $movie->genre_id = $data['genre_id'];
         $movie->name_eng = $data['name_eng'];
         $movie->phim_hot = $data['phim_hot'];
         $movie->country_id = $data['country_id'];
         $movie->ngaytao = Carbon::now('Asia/Ho_Chi_Minh');
         $movie->ngaycapnhat = Carbon::now('Asia/Ho_Chi_Minh');
+        foreach($data['genre'] as $key => $gen){
+            $movie -> genre_id = $gen[0];
+        }
 
 
         //them hinh anh 
@@ -90,6 +93,8 @@ class MovieController extends Controller
             $movie->image = $new_image;
         }
         $movie ->save();
+        //them nhieu the loai cho phim 
+        $movie->movie_genre()->attach($data('genre'));
         return redirect()-> back();
     }
 
@@ -115,9 +120,10 @@ class MovieController extends Controller
         $movie = Movie::find($id);
         $category = Category::pluck('title','id');
         $genre = Genre::pluck('title','id');
+        $list_genre = Genre::all();
         $country = Country::pluck('title','id');
         $list = Movie::all();
-        return view('admincp.movie.form',compact('list', 'movie', 'category','genre','country'));
+        return view('admincp.movie.form',compact('list', 'movie', 'category','genre','country', 'list_genre'));
     }
 
     /**
@@ -135,14 +141,14 @@ class MovieController extends Controller
         $movie -> title = $data['title'];
         $movie -> slug = $data['slug'];
         $movie->trailer = $data['trailer'];
-
         $movie->phude = $data['phude'];
         $movie->thoiluong = $data['thoiluong'];
+        $movie->sotap = $data['sotap'];
+
         $movie->resolution = $data['resolution'];
         $movie -> description = $data['description'];
         $movie -> status = $data['status'];
         $movie -> category_id = $data['category_id'];
-        $movie -> genre_id = $data['genre_id'];
         $movie -> country_id = $data['country_id'];
         $movie->name_eng = $data['name_eng'];
         $movie->phim_hot = $data['phim_hot'];
@@ -161,7 +167,12 @@ class MovieController extends Controller
             $get_image->move($path,$new_image);
             $movie->image = $new_image;
         }
+        foreach($data['genre'] as $key => $gen){
+            $movie -> genre_id = $gen[0];
+        }
+        
         $movie -> save();
+        $movie->movie_genre()->sync($data['genre']);
         return redirect()-> back();
     }
 
@@ -174,9 +185,12 @@ class MovieController extends Controller
     public function destroy($id)
     {
         $movie = Movie::find($id);
+        //xóa ảnh
         if(!empty($movie->image)) {
             unlink('public/uploads/movie/'.$movie->image);
         }
+        //xóa thể loại 
+        Movie_Genre::whereIn('movie_id', [$movie->id])->delete();
         $movie->delete();
         return redirect()-> back();
     }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Movie;
 
 class EpisodeController extends Controller
 {
@@ -23,6 +24,8 @@ class EpisodeController extends Controller
      */
     public function create()
     {
+        $list_movie = Movie::orderBy('id','DESC')->pluck('title','id');
+        return view('admincp.episode.form',compact('list_movie'));
     }
 
     /**

@@ -32,6 +32,10 @@ Route::get('/quoc-gia/{slug}', [IndexController::class, 'country'])->name('count
 Route::get('/phim/{slug}', [IndexController::class, 'movie'])->name('movie');
 Route::get('/xem-phim', [IndexController::class, 'watch'])->name('watch');
 Route::get('/episode', [IndexController::class, 'episode'])->name('episode');
+Route::get('/tim-kiem', [IndexController::class, 'timkiem'])->name('tim-kiem');
+Route::get('/home', function() {
+    return redirect()->route('home');
+});
 
 
 Auth::routes();

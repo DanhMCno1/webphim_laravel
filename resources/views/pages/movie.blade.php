@@ -13,12 +13,9 @@
                            {{$movie->category->title}}
                         </a> »
                         @endif
-                        <span>
+                        
                            <a href="{{route('country',[$movie->country->slug])}}">{{$movie->country->title}}</a> »
-                           <span class="breadcrumb_last" aria-current="page">
-                              {{$movie->title}}
-                           </span>
-                        </span>
+                           <span class="breadcrumb_last" aria-current="page">{{$movie->title}}</span>
                      </span>
                   </span>
                </div>
@@ -82,12 +79,15 @@
                                  Thuyết minh
                            @endif
                            </span></li>
-                        <li class="list-info-group-item"><span>Điểm IMDb</span> : <span class="imdb">7.2</span></li>
+                        <li class="list-info-group-item"><span>Điểm IMDb</span> : <span class="imdb">Chưa có đánh giá</span></li>
                         <li class="list-info-group-item"><span>Thời lượng</span> : {{$movie->thoiluong}}</li>
+                        <li class="list-info-group-item"><span>Số tập phim</span> : {{$movie->sotap}}/{{$movie->sotap}} - Hoàn thành</li>
                         <li class="list-info-group-item"><span>Thể loại</span> :
-                           <a href="{{route('genre',[$movie->genre->slug])}}" rel="genre tag">{{$movie->genre->title}}</a>
+                        @foreach($movie->movie_genre as $gen)
+                           <a href="{{route('genre',[$gen->slug])}}" rel="category tag">{{$gen->title}},</a>
+                        @endforeach 
                         <li class="list-info-group-item"><span>Danh mục phim</span> :
-                           <a href="{{route('category',[$movie->category->slug])}}" rel="category tag">{{$movie->category->title}}</a>
+                           <a href="{{route('category',[$movie->category->slug])}}" rel="category tag">{{$movie->category->title}} </a>
                         <li class="list-info-group-item"><span>Quốc gia</span> :
                            <a href="{{route('country',[$movie->country->slug])}}" rel="country tag">{{$movie ->country ->title}}</a>
                         </li>
@@ -193,7 +193,7 @@
                            items: 4
                         },
                         1000: {
-                           items: 4
+                           items: 6
                         }
                      }
                   })
