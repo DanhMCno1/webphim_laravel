@@ -95,7 +95,20 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.min.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
     <script type="text/javascript" src="//cdn.datatables.net/2.0.5/js/dataTables.min.js"></script>
-
+    <script type="text/javascript">
+    $('.select-movie').change(function(){
+        var id = $(this).val();
+        $.ajax({
+            url:"{{route('select-movie')}}",
+            method:"GET",
+            data:{id:id},
+            success: function(data)
+                {
+                    $('#show_movie').html(data);
+                }
+        });
+    })
+    </script>
     <script type="text/javascript">
         $('.select-topview').change(function(){
             var topview = $(this).find(':selected').val();
@@ -121,7 +134,6 @@
     </script>
     <script type="text/javascript">
         let table = new DataTable('#tablephim');
-
     function ChangeToSlug()
         {
 

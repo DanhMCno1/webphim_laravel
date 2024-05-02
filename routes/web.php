@@ -30,8 +30,8 @@ Route::get('/danh-muc/{slug}', [IndexController::class, 'category'])->name('cate
 Route::get('/the-loai/{slug}', [IndexController::class, 'genre'])->name('genre');
 Route::get('/quoc-gia/{slug}', [IndexController::class, 'country'])->name('country');
 Route::get('/phim/{slug}', [IndexController::class, 'movie'])->name('movie');
-Route::get('/xem-phim', [IndexController::class, 'watch'])->name('watch');
-Route::get('/episode', [IndexController::class, 'episode'])->name('episode');
+Route::get('/xem-phim/{slug}', [IndexController::class, 'watch'])->name('watch');
+Route::get('/so-tap', [IndexController::class, 'so-episode'])->name('so-tap');
 Route::get('/tim-kiem', [IndexController::class, 'timkiem'])->name('tim-kiem');
 Route::get('/home', function() {
     return redirect()->route('home');
@@ -64,8 +64,13 @@ Route::group(['prefix' => 'admin'], function () {
     Route::post('movie/destroy/{id}', [MovieController::class, 'destroy'])->name('movie.destroy');
     Route::get('movie/edit/{id}', [MovieController::class, 'edit'])->name('movie.edit');
     Route::post('movie/update/{id}', [MovieController::class, 'update'])->name('movie.update');
+    // them tap phim
     Route::resource('episode', EpisodeController::class);
-
+    Route::get('select-movie', [EpisodeController::class, 'select_movie'])->name('select-movie');
+    Route::resource('movie', MovieController::class);
+    Route::post('episode/destroy/{id}', [EpisodeController::class, 'destroy'])->name('episode.destroy');
+    Route::get('episode/edit/{id}', [EpisodeController::class, 'edit'])->name('episode.edit');
+    Route::post('episode/update/{id}', [EpisodeController::class, 'update'])->name('episode.update');
     //route admin 
     Route::post('resorting', [CategoryController::class, 'resorting'])->name('resorting');
     // update movies top view

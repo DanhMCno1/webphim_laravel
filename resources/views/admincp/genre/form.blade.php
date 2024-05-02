@@ -63,11 +63,11 @@
   <thead>
     <tr>
       <th scope="col">#</th>
-      <th scope="col">Title</th>
-      <th scope="col">Slug</th>
-      <th scope="col">Description</th>
-      <th scope="col">Active/Inactive</th>
-      <th scope="col">Manage</th>
+      <th scope="col">Tiêu đề</th>
+      <th scope="col">Key</th>
+      <th scope="col">Mô tả</th>
+      <th scope="col">Hoạt động</th>
+      <th scope="col">Quản lý</th>
     </tr>
   </thead>
   <tbody>
