@@ -11,7 +11,7 @@ use App\Models\Country;
 use Carbon\Carbon;
 use File;
 
-class MovieController extends Controller
+class MovieController extends Controller 
 {
     /**
      * Display a listing of the resource.
