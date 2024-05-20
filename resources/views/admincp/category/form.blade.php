@@ -65,7 +65,6 @@
     <tr>
       <th scope="col">#</th>
       <th scope="col">Title</th>
-      <!-- <th scope="col">Description</th> -->
       <th scope="col">Slug</th>
       <th scope="col">Active/Inactive</th>
       <th scope="col">Manage</th>
@@ -76,7 +75,6 @@
     <tr id="{{$cate->id}}">
       <th scope="row">{{$key}}</th>
       <td>{{$cate->title}}</td>
-      <!-- <td>{{$cate->description}}</td> -->
       <td>{{$cate->slug}}</td>
       <td>
         @if($cate->status)

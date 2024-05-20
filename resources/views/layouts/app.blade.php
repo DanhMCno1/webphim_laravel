@@ -136,7 +136,6 @@
         let table = new DataTable('#tablephim');
     function ChangeToSlug()
         {
-
             var slug;
          
             //Lấy text từ thẻ input title 

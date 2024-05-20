@@ -8,6 +8,8 @@ use App\Models\Movie_Genre;
 use App\Models\Category;
 use App\Models\Genre;
 use App\Models\Country;
+use App\Models\Episode;
+
 use Carbon\Carbon;
 use File;
 
@@ -191,7 +193,10 @@ class MovieController extends Controller
         }
         //xóa thể loại 
         Movie_Genre::whereIn('movie_id', [$movie->id])->delete();
-        $movie->delete();
+        // xoa tap phim
+        Episode::whereIn('movie_id', [$movie->id])->delete();
+        // $movie->delete();
         return redirect()-> back();
+
     }
 }

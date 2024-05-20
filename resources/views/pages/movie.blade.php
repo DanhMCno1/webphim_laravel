@@ -45,7 +45,7 @@
                      @if($movie->resolution !=5)
                      <div class="bwa-content">
                         <div class="loader"></div>
-                        <a href="{{route('watch',[$movie->slug])}}" class="bwac-btn">
+                        <a href="{{route('watch',['slug'=>$movie->slug])}}" class="bwac-btn">
                            <i class="fa fa-play"></i>
                         </a>
                      </div>
@@ -91,6 +91,13 @@
                         <li class="list-info-group-item"><span>Quốc gia</span> :
                            <a href="{{route('country',[$movie->country->slug])}}" rel="country tag">{{$movie ->country ->title}}</a>
                         </li>
+                        <li class="list-info-group-item"><span>Tập phim mới nhất</span> :
+                        @foreach($episode as $key => $ep)
+                           <button >
+                              <a href="{{route('watch',['slug'=>$movie->slug, 'tap-phim'=>$episode_tapdau->episode])}}" rel="tag">{{$ep->episode}}</a>                  
+                           </button>
+                           @endforeach
+                        </li>
                      </ul>
                      <div class="movie-trailer hidden"></div>
                   </div>
@@ -133,7 +140,7 @@
                <article class="thumb grid-item post-38498">
                   <div class="halim-item">
                      <a class="halim-thumb" href="{{route('movie',$hot->slug)}}" title="{{$hot->title}}">
-                        <figure><img class="lazy img-responsive" src="{{ asset('public/uploads/movie/'.$hot->image) }}" alt="" title="{{$hot->title}}"></figure>
+                        <figure><img class="lazy img-responsive" src="{{ asset('public/uploads/movie/'.$hot->image) }}" title="{{$hot->title}}"></figure>
                         <span class="status">
                         @if($hot->resolution==0)
                                  HD
